@@ -3,7 +3,7 @@ package main;
 import java.util.Scanner;
 
 public class Main {
-	private static final String EMPTY = "";
+	private static final String QUIT = "dolan pls sthap";
 	private static final String UP = "w";
 	private static final String DOWN = "s";
 	private static final String LEFT = "a";
@@ -21,22 +21,22 @@ public class Main {
 		while (input.hasNext()) {
 			line = input.nextLine();
 			
-			if (line.equals(EMPTY)) {
+			if (line.equals(QUIT)) {
 				input.close();
 				print("Bye!\n");
+				System.exit(0);
 			} else if (line.equals(UP)) {
 				g.moveUp();
-				print(g);
 			} else if (line.equals(DOWN)) {
 				g.moveDown();
-				print(g);
 			} else if (line.equals(LEFT)) {
 				g.moveLeft();
-				print(g);
 			} else if (line.equals(RIGHT)) {
 				g.moveRight();
-				print(g);
 			}
+			
+			g.addRandom();
+			print(g);
 		}
 	}
 
