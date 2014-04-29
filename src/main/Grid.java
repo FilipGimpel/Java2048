@@ -24,6 +24,34 @@ public class Grid {
 		addRandom();
 	}
 	
+	/**
+	 * For testing purposes
+	 */
+	private void setGameOver() {
+		mArray[0][0] = 2;
+		mArray[0][1] = 4;
+		mArray[0][2] = 2;
+		mArray[0][3] = 4;
+		
+		mArray[1][0] = 4;
+		mArray[1][1] = 2;
+		mArray[1][2] = 4;
+		mArray[1][3] = 2;
+		
+		mArray[2][0] = 2;
+		mArray[2][1] = 4;
+		mArray[2][2] = 2;
+		mArray[2][3] = 4;
+		
+		mArray[3][0] = 2;
+		mArray[3][1] = 4;
+		mArray[3][2] = 2;
+		mArray[3][3] = 4;
+	}
+	
+	/**
+	 * Returns list of empty elements in grid
+	 */
 	private List<Point> getEmptyElements() {
 		List<Point> emptyElements = new ArrayList<Point>();
 		
@@ -38,14 +66,49 @@ public class Grid {
 		return emptyElements;
 	}
 	
-	public void addRandom() {
+	/**
+	 * Checks if we can make any more moves, or if the game is over
+	 */
+	public boolean isGameLost() {
+		// if there are still some empty spots on the grid, game is surely not over
+		if (getEmptyElements().size() != 0) return false;
+		
+		// checking whether there are two elements in grid
+		// next to each other horizontally or vertically
+		// if so, return false, cause we can still play
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (j!=3) { /*check right */
+					if (mArray[i][j] == mArray[i][j+1]) return false; 
+				}
+				if (i!=3) { /*check bottom*/
+					if (mArray[i][j] == mArray[i+1][j]) return false;
+				}
+			}
+		}
+		
+		// otherwise, game over!
+		return true;
+	}
+	
+	/**
+	 * Adds random element in the grid
+	 */
+	public int addRandom() {
 		List<Point> emptyElements = getEmptyElements();
 		
-		Point randomPoint = emptyElements.get(
-				new Random().nextInt(emptyElements.size())
-			);
+		int result;
 		
-		mArray[randomPoint.x][randomPoint.y] = 2;
+		if (emptyElements.size() != 0) {
+			int randomPosition = new Random().nextInt(emptyElements.size());
+			Point randomPoint = emptyElements.get(randomPosition);
+			mArray[randomPoint.x][randomPoint.y] = 2;
+			result = randomPoint.x*4 + randomPoint.y;
+		} else {
+			result = -1;
+		}
+		
+		return result;
 	}
 	
 	@Override
@@ -98,7 +161,9 @@ public class Grid {
 					mArray[h][i-1] = mArray[h][i-1] + mArray[h][i];
 					mArray[h][i] = 0;
 					
-					mScore += mArray[h][i-1]; 
+					mScore += mArray[h][i-1];
+					
+					i++;
 				}
 			}
 		}
@@ -137,6 +202,8 @@ public class Grid {
 					mArray[h][i] = 0;
 					
 					mScore += mArray[h][i-1];
+					
+					i--;
 				}
 			}
 		}
@@ -175,6 +242,8 @@ public class Grid {
 					mArray[i][h] = 0;
 					
 					mScore += mArray[i-1][h]; 
+					
+					i--;
 				}
 			}
 		}
@@ -215,6 +284,8 @@ public class Grid {
 					mArray[i][h] = 0;
 					
 					mScore += mArray[i-1][h];
+					
+					i++;
 				}
 			}
 		}

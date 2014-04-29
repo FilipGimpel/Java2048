@@ -37,7 +37,13 @@ public class Main {
 			
 			g.addRandom();
 			print(g);
+			
+			if (g.isGameLost()) {
+				break;
+			}
 		}
+		
+		print("\n GAME OVER! d\n");
 	}
 
 	private static void print(Object obj) {
